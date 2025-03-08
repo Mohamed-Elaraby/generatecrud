@@ -10,7 +10,7 @@ class ModelGenerator implements GeneratorInterface
 {
     public function __construct(protected StubGenerator $stubGenerator) {}
 
-    public function generate(string $name, array $variables, string $dataTableName, string $formattedToTranslationStyle): void
+    public function generate(string $name, array $variables, string $dataTableName, string $formattedToTranslationStyle, string $databaseSchemaTableName): void
     {
         $stub = $this->stubGenerator->getStubContent($this->getStubPath(), $variables);
         $path = $this->getTargetPath($name);

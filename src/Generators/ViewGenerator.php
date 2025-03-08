@@ -10,37 +10,37 @@ class ViewGenerator implements GeneratorInterface
 {
     public function __construct(protected StubGenerator $stubGenerator) {}
 
-public function generate(string $name, array $variables, string $dataTableName, string $formattedToTranslationStyle): void
-{
-    $views = ['index', 'create', 'edit'];
-    $pluralName = $variables['pluralModel'];
-    $viewPath = resource_path("views/admin/{$pluralName}");
+    public function generate(string $name, array $variables, string $dataTableName, string $formattedToTranslationStyle, string $databaseSchemaTableName): void
+    {
+        $views = ['index', 'create', 'edit'];
+        $pluralName = $variables['pluralModel'];
+        $viewPath = resource_path("views/admin/{$pluralName}");
 
-    File::ensureDirectoryExists($viewPath);
+        File::ensureDirectoryExists($viewPath);
 
-    foreach ($views as $view) {
-        $stub = $this->stubGenerator->getStubContent(
-            "views/{$view}.stub",
-            $variables
-        );
+        foreach ($views as $view) {
+            $stub = $this->stubGenerator->getStubContent(
+                "views/{$view}.stub",
+                $variables
+            );
 
-        $path = "{$viewPath}/{$view}.blade.php";
+            $path = "{$viewPath}/{$view}.blade.php";
 
-        if (File::exists($path)) {
-            throw new \Exception("View file already exists: {$path}");
+            if (File::exists($path)) {
+                throw new \Exception("View file already exists: {$path}");
+            }
+
+            File::put($path, $stub);
         }
-
-        File::put($path, $stub);
     }
-}
 
-public function getStubPath(): string
-{
-    return 'views/'; // Not used directly in this implementation
-}
+    public function getStubPath(): string
+    {
+        return 'views/'; // Not used directly in this implementation
+    }
 
-public function getTargetPath(string $name): string
-{
-    return resource_path("views/admin/"); // Not used directly
-}
+    public function getTargetPath(string $name): string
+    {
+        return resource_path("views/admin/"); // Not used directly
+    }
 }

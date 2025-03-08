@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
-        Schema::create('{{pluralModel}}', function (Blueprint $table) {
+        Schema::create('{{databaseSchemaTableName}}', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->timestamps();

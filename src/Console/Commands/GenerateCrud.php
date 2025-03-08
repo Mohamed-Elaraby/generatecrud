@@ -47,10 +47,10 @@ class GenerateCrud extends Command
             $modelVariable = Str::camel($modelName);
             $pluralModel = Str::plural($modelVariable);
             $dataTableName = Str::lower(Str::replace(' ', '', $modelName));
-
             $formattedToTranslationStyle = strtolower(preg_replace('/([a-z])([A-Z])/', '$1 $2', $modelName));
+            $databaseSchemaTableName = Str::snake($modelName);
 
-            $this->generateComponents($modelName, $modelVariable, $pluralModel, $dataTableName, $formattedToTranslationStyle);
+            $this->generateComponents($modelName, $modelVariable, $pluralModel, $dataTableName, $formattedToTranslationStyle, $databaseSchemaTableName);
             $this->updateSystemFiles($modelName, $pluralModel);
 
             $this->info("CRUD for {$modelName} generated successfully!");
@@ -65,17 +65,17 @@ class GenerateCrud extends Command
         return ucfirst(Str::camel($model));
     }
 
-    private function generateComponents(string $modelName, string $modelVariable, string $pluralModel, string $dataTableName, string $formattedToTranslationStyle): void
+    private function generateComponents(string $modelName, string $modelVariable, string $pluralModel, string $dataTableName, string $formattedToTranslationStyle, string $databaseSchemaTableName): void
     {
 
 
-        $stubVariables = $this->getStubVariables($modelName, $modelVariable, $pluralModel, $dataTableName, $formattedToTranslationStyle);
+        $stubVariables = $this->getStubVariables($modelName, $modelVariable, $pluralModel, $dataTableName, $formattedToTranslationStyle, $databaseSchemaTableName);
 
-        $this->controllerGenerator->generate($modelName, $stubVariables, $dataTableName, $formattedToTranslationStyle);
-        $this->modelGenerator->generate($modelName, $stubVariables, $dataTableName, $formattedToTranslationStyle);
-        $this->migrationGenerator->generate($pluralModel, $stubVariables, $dataTableName, $formattedToTranslationStyle);
-        $this->viewGenerator->generate($modelName, $stubVariables, $dataTableName, $formattedToTranslationStyle);
-        $this->dataTableGenerator->generate($modelName, $stubVariables, $dataTableName, $formattedToTranslationStyle);
+        $this->controllerGenerator->generate($modelName, $stubVariables, $dataTableName, $formattedToTranslationStyle, $databaseSchemaTableName);
+        $this->modelGenerator->generate($modelName, $stubVariables, $dataTableName, $formattedToTranslationStyle, $databaseSchemaTableName);
+        $this->migrationGenerator->generate($pluralModel, $stubVariables, $dataTableName, $formattedToTranslationStyle, $databaseSchemaTableName);
+        $this->viewGenerator->generate($modelName, $stubVariables, $dataTableName, $formattedToTranslationStyle, $databaseSchemaTableName);
+        $this->dataTableGenerator->generate($modelName, $stubVariables, $dataTableName, $formattedToTranslationStyle, $databaseSchemaTableName);
         $this->seederGenerator->generate($modelName, $modelVariable);
     }
 
@@ -85,13 +85,14 @@ class GenerateCrud extends Command
         $this->seederGenerator->updateDatabaseSeeder($modelName);
     }
 
-    private function getStubVariables(string $modelName, string $modelVariable, string $pluralModel, string $dataTableName, string $formattedToTranslationStyle): array
+    private function getStubVariables(string $modelName, string $modelVariable, string $pluralModel, string $dataTableName, string $formattedToTranslationStyle, string $databaseSchemaTableName): array
     {
         return [
             'ModelName' => $modelName,
             'modelVariable' => $modelVariable,
             'pluralModel' => $pluralModel,
             'dataTableName' => $dataTableName,
+            'databaseSchemaTableName' => $databaseSchemaTableName,
             'formattedToTranslationStyle' => $formattedToTranslationStyle,
             'titleUpperCase' => Str::upper(Str::snake($modelName, ' ')),
             'translationKey' => Str::kebab($modelName),
