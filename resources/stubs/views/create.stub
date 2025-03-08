@@ -30,7 +30,7 @@
                                 @csrf
                                 <!-- Dynamic Form Fields Will Be Added Here -->
                                 <div class="mb-3">
-                                    <label for="name" class="form-label fs-14 text-dark">{{ __('trans.{{translationFormattedString}} name') }}</label>
+                                    <label for="name" class="form-label fs-14 text-dark">{{ __('trans.{{formattedToTranslationStyle}} name') }}</label>
                                     <div class="input-group">
                                         <div class="input-group-text"><i class="ri-user-5-fill"></i></div>
                                         <input name="name" type="text" class="form-control" id="name" value="{{ old('name') }}">

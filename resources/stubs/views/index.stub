@@ -26,7 +26,7 @@
                         <div class="bottom-right"></div>
                         <div class="card-header">
                             <div class="card-title">
-                                {{ __('trans.all {{translationFormattedString}} list') }}
+                                {{ __('trans.all {{formattedToTranslationStyle}} list') }}
                             </div>
                         </div>
                         <div class="card-body">
