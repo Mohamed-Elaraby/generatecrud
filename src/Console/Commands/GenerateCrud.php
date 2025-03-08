@@ -48,7 +48,7 @@ class GenerateCrud extends Command
             $pluralModel = Str::plural($modelVariable);
             $dataTableName = Str::lower(Str::replace(' ', '', $modelName));
             $formattedToTranslationStyle = strtolower(preg_replace('/([a-z])([A-Z])/', '$1 $2', $modelName));
-            $databaseSchemaTableName = Str::snake($modelName);
+            $databaseSchemaTableName = Str::plural(Str::snake($modelName));
 
             $this->generateComponents($modelName, $modelVariable, $pluralModel, $dataTableName, $formattedToTranslationStyle, $databaseSchemaTableName);
             $this->updateSystemFiles($modelName, $pluralModel);
